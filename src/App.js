@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js
+import React, { useState } from 'react';
+import AddTasks from './components/AddTasks';
+import ShowTasks from './components/ShowTasks';
 
-function App() {
+const App = () => {
+  const [taskList, setTaskList] = useState([]);
+  const [showAddTask, setShowAddTask] = useState(false);
+
+  const handleToggleView = () => {
+    setShowAddTask(!showAddTask);
+  };
+
+  const handleTaskAdded = () => {
+    setShowAddTask(false);
+  };
+
+  const handleDelete = (index) => {
+    // Suppression de la tâche du tableau
+    const updatedTasks = [...taskList];
+    updatedTasks.splice(index, 1);
+    setTaskList(updatedTasks);
+  };
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Task Manager</h1>
+      {showAddTask ? (
+        <AddTasks tasks={taskList} setTasks={setTaskList} onTaskAdded={handleTaskAdded} />
+      ) : (
+        <ShowTasks taskList={taskList}  onDelete={handleDelete} />
+      )}
+      <button onClick={handleToggleView}>
+        {showAddTask ? 'Show Tasks' : 'Add Task'}
+      </button>
     </div>
   );
-}
+};
+
 
 export default App;
