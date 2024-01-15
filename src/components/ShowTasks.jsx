@@ -1,11 +1,18 @@
 // ShowTasks.js
 import React from 'react';
 
-const ShowTasks = ({ taskList, onDelete  }) => {
+const ShowTasks = ({ taskList, onDelete, onEdit  }) => {
 
   const handleDelete = (index) => {
     if (onDelete) {
       onDelete(index);
+    }
+  };
+
+  const handleEdit = (index) => {
+    // Appel de la fonction onEdit pour l'édition de la tâche
+    if (onEdit) {
+      onEdit(index);
     }
   };
 
@@ -26,7 +33,7 @@ const ShowTasks = ({ taskList, onDelete  }) => {
               <td>{task.title}</td>
               <td>{task.completed ? 'Yes' : 'No'}</td>
               <td>
-                <button onClick={() => {}}>Edit</button>
+                <button onClick={() =>handleEdit(index)}>Edit</button>
                 <button onClick={() =>handleDelete(index)}>Delete</button>
               </td>
             </tr>

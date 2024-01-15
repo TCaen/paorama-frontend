@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 
-const AddTasks = ({ tasks, setTasks, onTaskAdded }) => {
+const AddTasks = ({ tasks, setTasks, onTaskAdded, editIndex, editTask }) => {
   const [taskTitle, setTaskTitle] = useState('');
   const [completed, setCompleted] = useState(false);
+
+  useEffect(() => {
+    if (editIndex !== null) {
+      setTaskTitle(editTask.title);
+      setCompleted(editTask.completed);
+    }
+  }, [editIndex, editTask]);
+
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -13,9 +21,14 @@ const AddTasks = ({ tasks, setTasks, onTaskAdded }) => {
       completed: completed,
     };
 
-    setTasks([...tasks, newTask]);
+    if (editIndex !== null) {
+      const updatedTasks = [...tasks];
+      updatedTasks[editIndex] = newTask;
+      setTasks(updatedTasks);
+    } else {
+      setTasks([...tasks, newTask]);
+    }
 
-    // Appel de la fonction de rappel pour informer le parent de l'ajout de la tâche
     if (onTaskAdded) {
       onTaskAdded();
     }
